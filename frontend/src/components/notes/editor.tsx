@@ -116,6 +116,10 @@ export default function Editor() {
   }
 
   const handleDelete = async () => {
+
+  console.log("DELETE CLICKED");
+  console.log("id:", id);
+
   if (!id) return;
 
   const confirmDelete = window.confirm(
@@ -125,11 +129,15 @@ export default function Editor() {
   if (!confirmDelete) return;
 
   try {
+
     await deleteNote(id);
 
     navigate("/dashboard");
+
   } catch (error) {
+
     console.error(error);
+
   }
 };
   
@@ -165,11 +173,13 @@ const handleShare = async () => {
 
   return (
     <div className="max-w-5xl
-  mx-auto
-  p-6
-  space-y-4
-  min-h-screen
-  bg-black">
+    relative
+max-w-5xl
+mx-auto
+p-6
+space-y-4
+min-h-screen
+bg-black">
       <input
   className="
     w-full
@@ -194,9 +204,10 @@ const handleShare = async () => {
 onClick={handleShare}
 className="
 absolute
-    right-40
+    right-70
     top-7.25
       float-right
+      z-50
       p-2
       rounded-lg
       text-red-400
@@ -214,10 +225,11 @@ absolute
     onClick={handleDelete}
     className="
       absolute
-    right-27.5
+    right-58
     top-7.25
       float-right
       p-2
+      z-50
       rounded-lg
       text-red-400
       hover:bg-red-500/20

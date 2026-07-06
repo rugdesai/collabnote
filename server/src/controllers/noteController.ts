@@ -349,13 +349,31 @@ export const deleteNote = async (
 
 
 
-    await prisma.note.delete({
+    await prisma.invite.deleteMany({
 
-      where: {
-        id,
-      },
+  where: {
+    noteId: id,
+  },
 
-    });
+});
+
+
+await prisma.collaboration.deleteMany({
+
+  where: {
+    noteId: id,
+  },
+
+});
+
+
+await prisma.note.delete({
+
+  where: {
+    id,
+  },
+
+});
 
 
 

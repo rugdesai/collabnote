@@ -1,5 +1,5 @@
 import { EditorContent, useEditor } from "@tiptap/react";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Toolbar from "./Toolbar";
@@ -23,6 +23,11 @@ export default function TiptapEditor({
   content,
   onChange,
 }: TiptapEditorProps) {
+
+  const [typingUser, setTypingUser] = useState("");
+
+const typingTimeout = useRef<number | null>(null);
+
   const editor = useEditor({
     extensions: [
         StarterKit,
@@ -67,6 +72,17 @@ export default function TiptapEditor({
 
   );
 
+  socket.emit(
+  "user-typing",
+  {
+    noteId:
+      window.location.pathname.split("/").pop(),
+
+    email:
+      localStorage.getItem("email"),
+  }
+);
+
 },
   });
 
@@ -85,13 +101,14 @@ noteId
 );
 
 
-
 const updateHandler = (content:string)=>{
 
 
 editor.commands.setContent(
 content,
-false
+{
+    emitUpdate:false
+}
 );
 
 
@@ -118,6 +135,51 @@ updateHandler
 
 },[editor]);
 
+useEffect(() => {
+
+  const typingHandler = (email:string) => {
+
+    setTypingUser(
+      `${email} is editing...`
+    );
+
+
+    if (typingTimeout.current) {
+
+      clearTimeout(
+        typingTimeout.current
+      );
+
+    }
+
+
+    typingTimeout.current =
+      window.setTimeout(()=>{
+
+        setTypingUser("");
+
+      },2000);
+
+  };
+
+
+  socket.on(
+    "receive-typing",
+    typingHandler
+  );
+
+
+  return ()=>{
+
+    socket.off(
+      "receive-typing",
+      typingHandler
+    );
+
+  };
+
+
+},[]);
   useEffect(() => {
 
   if (!editor) return;
@@ -127,7 +189,7 @@ updateHandler
     editor.commands.setContent(
       content,
       {
-        emitsUpdate: false,
+        emitUpdate: false,
       }
     );
 
@@ -143,7 +205,16 @@ updateHandler
   shadow-xl">
 
     <Toolbar editor={editor} />
-
+    {typingUser && (
+  <p className="
+    px-5
+    py-2
+    text-sm
+    text-gray-400
+  ">
+    {typingUser}
+  </p>
+)}
     <div className="min-h-screen bg-black text-white">
         <EditorContent editor={editor}
         className="

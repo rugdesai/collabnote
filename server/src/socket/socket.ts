@@ -49,6 +49,19 @@ data.content
 
 });
 
+socket.on(
+  "user-typing",
+  ({noteId,email})=>{
+
+    socket
+      .to(noteId)
+      .emit(
+        "receive-typing",
+        email
+      );
+
+  }
+);
 
 
 
