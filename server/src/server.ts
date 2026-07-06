@@ -2,7 +2,7 @@ import app from "./app";
 import "dotenv/config";
 import http from "http";
 import { Server } from "socket.io";
-import { initializeSocket } from "../src/socket/socket";
+import { initializeSocket } from "./socket/socket";
 
 const PORT = 8000;
 

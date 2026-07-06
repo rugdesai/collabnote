@@ -6,17 +6,11 @@ import {
   Italic,
   Underline,
   Strikethrough,
-  Heading1,
-  Heading2,
-  List,
-  ListOrdered,
-  Palette,
   Highlighter,
   Link,
   Image,
   Undo2,
   Redo2,
-  Trash2,
 } from "lucide-react";
 
 interface ToolbarProps {
@@ -214,7 +208,6 @@ const res = await fetch(
 );
 
 const data = await res.json();
-console.log(data);
 editor
   .chain()
   .focus()

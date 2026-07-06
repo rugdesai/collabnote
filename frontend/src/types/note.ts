@@ -3,5 +3,6 @@ export interface Note {
   title: string;
   content: string;
   collaborators?: string[];
+  createdAt: string;
   updatedAt: string;
 }

@@ -1,19 +1,11 @@
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import NoteCard from "./noteCard";
-import Button from "../common/button";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import type { Note } from "../../types/note";
 
-interface NotesListProps {
-  selectedNote: Note | null;
-  setSelectedNote: React.Dispatch<React.SetStateAction<Note | null>>;
-}
-
-export default function NotesList({
-  setSelectedNote,
-}: NotesListProps) {
+export default function NotesList() {
   const [notes, setNotes] = useState<Note[]>([]);
 
   const fetchNotes = async () => {
@@ -29,7 +21,7 @@ export default function NotesList({
   };
 
   const createNote = async () => {
-  console.log("1. Button clicked");
+
 
   try {
     console.log("2. About to send POST request");

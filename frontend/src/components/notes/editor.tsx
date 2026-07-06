@@ -99,6 +99,10 @@ export default function Editor() {
 
   return () => {
 
+    <p className="text-xs text-zinc-500">
+  {saveStatus}
+</p>
+
     socket.off(
       "receive-note-change"
     );
@@ -117,7 +121,6 @@ export default function Editor() {
 
   const handleDelete = async () => {
 
-  console.log("DELETE CLICKED");
   console.log("id:", id);
 
   if (!id) return;
@@ -161,8 +164,6 @@ const handleShare = async () => {
 
 
   } catch (error) {
-
-    console.log(error);
 
     alert("Could not create invite link");
 
