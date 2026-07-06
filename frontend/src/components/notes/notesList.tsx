@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import NoteCard from "./noteCard";
 import Button from "../common/button";
 import api from "../../services/api";
+import { useNavigate } from "react-router-dom";
 import type { Note } from "../../types/note";
 
 interface NotesListProps {
@@ -18,7 +19,9 @@ export default function NotesList({
   const fetchNotes = async () => {
     try {
       const res = await api.get("/notes");
-      console.log(res.data);
+      console.log("FULL RESPONSE:", res.data);
+      console.log("NOTES:", res.data.notes);
+      console.log("FIRST NOTE:", res.data.notes[0]);
       setNotes(res.data.notes);
     } catch (error) {
       console.error(error);
@@ -26,24 +29,37 @@ export default function NotesList({
   };
 
   const createNote = async () => {
-    try {
-      await api.post("/notes", {
-        title: "Untitled Note",
-        content: "",
-      });
+  console.log("1. Button clicked");
 
-      fetchNotes();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    console.log("2. About to send POST request");
+
+    const res = await api.post("/notes", {
+      title: "Untitled Note",
+      content: "New Note",
+    });
+
+    console.log("3. POST successful", res.data);
+
+    await fetchNotes();
+
+    console.log("4. Notes refreshed");
+  } catch (error) {
+    console.error("5. Error:", error);
+  }
+};
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchNotes();
   }, []);
 
+  console.log("Number of notes:", notes.length);
+  console.log(notes);
+
   return (
-    <div className="h-full flex flex-col">
+    <div className="w-full flex flex-col">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -59,12 +75,15 @@ export default function NotesList({
           </p>
         </div>
 
-        <Button
-          onClick={createNote}
-          className="w-fit px-5 py-2 text-sm italic font-semibold rounded-lg bg-[#f4d953] hover:bg-[#F2D14B] transition-all duration-200"
-        >
+        <button
+        onClick={() => {
+          console.log("WORKING");
+          createNote();
+        }}
+        className="bg-yellow-400 text-black px-5 py-2 rounded-lg">
           + new note
-        </Button>
+        </button>
+
       </div>
 
       {/* Search */}
@@ -92,9 +111,9 @@ export default function NotesList({
       </div>
 
       {/* Table Header */}
-      <div className="grid grid-cols-3 px-5 pb-3 text-xs uppercase tracking-widest text-zinc-500 border-b border-zinc-800">
+      <div className="grid grid-cols-[1fr_270px_270px] px-5 pb-3 text-xs uppercase tracking-widest text-zinc-500 border-b border-zinc-800">
         <p>Title</p>
-        <p>Collaborators</p>
+        <p>Created</p>
         <p>Last Edited</p>
       </div>
 
@@ -103,7 +122,7 @@ export default function NotesList({
         {notes.map((note) => (
           <div
             key={note.id}
-            onClick={() => setSelectedNote(note)}
+            onClick={() => navigate(`/notes/${note.id}`)}
             className="cursor-pointer"
           >
             <NoteCard note={note} />

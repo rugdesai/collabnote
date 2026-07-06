@@ -13,6 +13,7 @@ model User {
   password  String
   createdAt DateTime @default(now())
   notes     Note[]
+  collaborations Collaboration[]
 }
 
 model Note {
@@ -24,4 +25,38 @@ model Note {
 
   ownerId   String
   owner     User @relation(fields: [ownerId], references: [id])
+  collaborations Collaboration[]
+  invites Invite[]
+}
+
+model Collaboration {
+
+  id String @id @default(uuid())
+
+  userId String
+  noteId String
+
+
+  user User @relation(fields: [userId], references: [id])
+
+  note Note @relation(fields: [noteId], references: [id])
+
+
+  @@unique([userId, noteId])
+
+}
+
+model Invite {
+
+  id String @id @default(uuid())
+
+  token String @unique
+
+  noteId String
+
+  createdAt DateTime @default(now())
+
+
+  note Note @relation(fields: [noteId], references: [id])
+
 }

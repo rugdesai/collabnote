@@ -15,4 +15,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+export const updateNote = (
+  id: string,
+  data: {
+    title: string;
+    content: string;
+  }
+) => api.put(`/notes/${id}`, data);
+
+export const deleteNote = (id: string) => {
+  return api.delete(`/notes/${id}`);
+};
+
 export default api;

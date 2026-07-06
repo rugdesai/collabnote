@@ -12,22 +12,61 @@ const Login = () => {
 
     const handleLogin = async () => {
   try {
+
     setLoading(true);
+
 
     const response = await api.post("/auth/login", {
       email,
       password,
     });
 
-    localStorage.setItem("token", response.data.token);
 
-    window.location.href = "/dashboard";
+    localStorage.setItem(
+      "token",
+      response.data.token
+    );
+
+    localStorage.setItem(
+  "email",
+  email
+);
+
+    const pendingInvite =
+      localStorage.getItem("pendingInvite");
+
+
+    if (pendingInvite) {
+
+      localStorage.removeItem("pendingInvite");
+
+      window.location.href =
+        `/join/${pendingInvite}`;
+
+    } 
+    
+    else {
+
+      window.location.href =
+        "/dashboard";
+
+    }
+
+
   } catch (error: any) {
+
     console.error(error);
 
-    alert(error.response?.data?.message || "Login Failed");
+    alert(
+      error.response?.data?.message ||
+      "Login Failed"
+    );
+
+
   } finally {
+
     setLoading(false);
+
   }
 };
     

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-export const authenticate = (
+const authMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -11,29 +11,27 @@ export const authenticate = (
 
   if (!authHeader) {
     return res.status(401).json({
-      message: "Access Denied. No token provided."
+      message: "Access Denied. No token provided.",
     });
   }
 
   const token = authHeader.split(" ")[1];
 
   try {
-
     const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET as string
+      token,
+      process.env.JWT_SECRET as string
     );
 
     (req as any).user = decoded;
 
     next();
 
-} catch {
-
+  } catch {
     return res.status(401).json({
-        message: "Invalid Token"
+      message: "Invalid Token",
     });
-
-}
-
+  }
 };
+
+export default authMiddleware;

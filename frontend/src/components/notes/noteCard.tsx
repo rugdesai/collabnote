@@ -13,15 +13,30 @@ export default function NoteCard({ note }: NoteCardProps) {
         <h3 className="text-zinc-100 font-semisemisemibold">{note.title}</h3>
       </div>
 
-      {/* Collaborators */}
-      <div className="text-zinc-400 text-sm">
-        {note.collaborators.length}
-      </div>
+      {/* CREATED */}
+
+<p className="text-zinc-400 text-sm">
+   {new Date(note.createdAt).toLocaleString("en-IN", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+
+</p>
+      
 
       {/* Last Updated */}
       <div className="text-zinc-400 text-sm">
-        {note.updatedAt}
-      </div>
+        {new Date(note.updatedAt).toLocaleString("en-IN", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+        </div>
 
     </div>
   );
