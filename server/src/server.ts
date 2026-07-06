@@ -12,8 +12,12 @@ const server = http.createServer(app);
 // Attach Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://collabnote-seven.vercel.app"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   },
 });
 
