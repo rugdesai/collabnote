@@ -21,7 +21,7 @@
   },
   "scripts": {
   "dev": "ts-node-dev src/server.ts",
-  "build": "tsc",
+  "build": "prisma generate && prisma migrate deploy && tsc",
   "start": "node dist/server.js"
 }
 }
