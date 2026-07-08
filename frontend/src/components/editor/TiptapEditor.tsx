@@ -9,7 +9,6 @@ import FontSize from "./extensions/FontSize";
 import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
 import TiptapImage from "@tiptap/extension-image";
 import ResizeImage from "tiptap-extension-resize-image";
 import socket from "../../socket";
@@ -32,7 +31,6 @@ const typingTimeout = useRef<number | null>(null);
     extensions: [
         StarterKit,
         Underline,
-        Image,
         TextStyle,
         TiptapImage,
         Color,
