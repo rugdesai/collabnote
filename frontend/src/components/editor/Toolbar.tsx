@@ -198,6 +198,16 @@ formData.append(
   import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
 );
 
+console.log(
+  "CLOUD NAME:",
+  import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+);
+
+console.log(
+  "PRESET:",
+  import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+);
+
 const res = await fetch(
   `https://api.cloudinary.com/v1_1/${
     import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
@@ -207,8 +217,16 @@ const res = await fetch(
   }
 );
 
+
+
 const data = await res.json();
-console.log(data);
+console.log("CLOUDINARY RESPONSE:", data);
+
+if (!data.secure_url) {
+  alert(data.error?.message || "Upload failed");
+  return;
+}
+
 editor
   .chain()
   .focus()
