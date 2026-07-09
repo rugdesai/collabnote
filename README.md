@@ -1,228 +1,219 @@
-# 📝 CollabNote
+# CollabNote 📝✨
 
-A full-stack collaborative note-taking platform inspired by Notion, built with a modern TypeScript stack.  
-CollabNote enables users to create, edit, organize, and manage notes through a rich-text editor with authentication and persistent cloud storage.
+A Notion-inspired real-time collaborative editor built for creating, managing, and editing rich-text notes with seamless multi-user synchronization.
 
-🌐 Live Demo: https://collabnote-seven.vercel.app
+CollabNote brings together a modern editor experience, secure authentication, real-time updates, cloud image handling, and production-ready deployment.
 
 ---
 
-## 🚀 Features
+## 🚀 Live Demo
+
+🔗 Live Website: https://collabnote-seven.vercel.app
+
+💻 GitHub Repository: https://github.com/rugdesai/collabnote
+
+---
+
+# 📸 Preview
+
+## Authentication
+
+<img src="./assets/login.png" width="800"/>
+
+Secure authentication system with user registration, login, JWT authorization, and protected application routes.
+
+---
+
+## Dashboard
+
+<img src="./assets/dashboard.png" width="800"/>
+
+A minimal workspace where users can create, manage, and access their notes.
+
+Features:
+- Personal notes dashboard
+- Recently updated notes
+- Persistent database storage
+
+---
+
+## Rich Text Editor
+
+<img src="./assets/editor.png" width="800"/>
+
+A Notion-style editor experience powered by Tiptap.
+
+Features include:
+
+- Rich text formatting
+- Headings
+- Lists
+- Font customization
+- Text colors
+- Highlighting
+- Links
+- Image embedding
+- Auto-saving notes
+
+---
+
+## Real-Time Collaboration
+
+<img src="./assets/realtime.png" width="800"/>
+
+Multiple clients can edit the same note simultaneously with instant synchronization.
+
+Powered using WebSockets with Socket.IO.
+
+---
+
+# ✨ Features
 
 ### 🔐 Authentication
-- Secure user registration and login
+
+- User registration
+- Secure login
 - JWT-based authentication
-- Password hashing using bcrypt
-- Protected API routes
-
-### 📝 Rich Text Editing
-- Fully functional rich-text editor powered by TipTap
-- Text formatting controls
-- Headings, lists, bold, italic, underline support
-- Persistent document updates
-
-### 📂 Notes Management
-- Create new notes
-- View all user notes
-- Update note content
-- Delete notes
-- User-specific note storage
-
-### ⚡ Real-Time Collaboration
-- Real-time communication layer using Socket.IO
-- WebSocket-based architecture for collaborative editing
-
-### 🐳 Containerization
-- Dockerized backend environment
-- Docker Compose support for local development
-
-### ☁️ Deployment
-- Frontend deployed on Vercel
-- Backend deployed as a cloud service
-- Cloud PostgreSQL database integration
+- Protected backend routes
 
 ---
 
-## 🛠 Tech Stack
+### 📝 Notes Management
 
-### Frontend
-- React.js
+- Create notes
+- Update notes
+- Delete notes
+- Auto-save functionality
+- Persistent storage
+
+---
+
+### 🎨 Rich Text Editing
+
+Built with Tiptap Editor:
+
+- Bold / Italic / Underline formatting
+- Headings
+- Lists
+- Text colors
+- Highlights
+- Font customization
+- Link insertion
+- Image support
+
+---
+
+### ⚡ Real-Time Collaboration
+
+- WebSocket based communication
+- Live document updates
+- Multiple active editing sessions
+- Shared collaborative workspace
+
+---
+
+### ☁️ Cloud Integration
+
+- Cloudinary image uploads
+- PostgreSQL database hosting
+- Environment-based deployment configuration
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+- React
 - TypeScript
 - Vite
 - Tailwind CSS
-- TipTap Editor
-- Axios
-- React Router DOM
+- Tiptap Editor
 - Socket.IO Client
+- Axios
 
-### Backend
+---
+
+## Backend
+
 - Node.js
 - Express.js
 - TypeScript
 - Prisma ORM
 - PostgreSQL
+- Socket.IO
 - JWT Authentication
 - bcrypt
-- Socket.IO
 
-### DevOps / Tools
+---
+
+## Deployment
+
+- Vercel (Frontend)
+- Render (Backend)
 - Docker
-- Docker Compose
-- Git & GitHub
-- Vercel
+- Cloud PostgreSQL
+- Cloudinary
 
 ---
 
-## 🏗 System Architecture
+# ⚙️ Architecture
 
-```text
-                Client
-        React + TypeScript
-                |
-                |
-             REST API
-                |
-                |
-      Node.js + Express Server
-                |
-        ----------------
-        |              |
-     Prisma        Socket.IO
-        |              |
-        |
-    PostgreSQL Database
+```txt
+                React + TypeScript
+                        |
+                        |
+                 Express REST API
+                        |
+          -----------------------------
+          |                           |
+   PostgreSQL + Prisma          Socket.IO Server
+          |
+          |
+      Cloudinary Storage
 ```
 
 ---
 
-## 📁 Project Structure
+# Database Models
 
-```text
-CollabNote/
+Core database entities:
 
-├── frontend/
-│   ├── src/
-│   │   ├── api/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   └── context/
-│   |
-│   └── Dockerfile
-│
-├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── routes/
-│   │   ├── middleware/
-│   │   └── prisma/
-│   |
-│   └── Dockerfile
-│
-└── docker-compose.yml
-```
+- User
+- Note
+- Collaboration
+- Invite
+
+Supports note ownership, collaborative editing, and shared access.
 
 ---
 
-## ⚙️ Local Setup
+# Key Learnings
 
-### 1. Clone Repository
+Through CollabNote, I explored:
 
-```bash
-git clone https://github.com/your-username/CollabNote.git
-
-cd CollabNote
-```
-
----
-
-## Backend Setup
-
-```bash
-cd backend
-
-npm install
-```
-
-Create `.env`
-
-```env
-DATABASE_URL=your_postgresql_url
-JWT_SECRET=your_secret_key
-```
-
-Run Prisma:
-
-```bash
-npx prisma generate
-npx prisma migrate dev
-```
-
-Start server:
-
-```bash
-npm run dev
-```
+- Building scalable full-stack applications
+- Designing REST APIs
+- Authentication and authorization
+- Database modeling using Prisma ORM
+- Real-time communication using WebSockets
+- Rich-text editor customization
+- Production deployment workflows
+- Docker-based deployment
+- Managing environment variables across services
 
 ---
 
-## Frontend Setup
-
-```bash
-cd frontend
-
-npm install
-
-npm run dev
-```
-
----
-
-## Docker Setup
-
-Run the complete application:
-
-```bash
-docker compose up --build
-```
-
----
-
-## API Overview
-
-### Authentication Routes
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | /api/auth/register | Create account |
-| POST | /api/auth/login | Authenticate user |
-
-### Notes Routes
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | /api/notes | Fetch notes |
-| POST | /api/notes | Create note |
-| GET | /api/notes/:id | Fetch single note |
-| PUT | /api/notes/:id | Update note |
-| DELETE | /api/notes/:id | Delete note |
-
----
-
-## Future Improvements
+# Future Enhancements
 
 - AI-powered writing assistant
-- Document summarization using LLMs
-- Advanced collaboration permissions
-- Workspace/team support
-- Version history
+- Collaborative cursors
+- Comments and mentions
+- Document version history
+- Advanced permissions
 
 ---
 
-## Author
+# Author
 
-**Rugveda Desai**
-
-Computer Science & Data Science Undergraduate  
-Full Stack Development | AI | Product Engineering
-
----
+Built by **Rugveda Desai** 🚀
