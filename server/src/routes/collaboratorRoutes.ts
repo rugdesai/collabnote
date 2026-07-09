@@ -109,8 +109,8 @@ router.post(
 
 
       res.json({
-        link: `http://localhost:5173/join/${token}`,
-      });
+  link: `${process.env.FRONTEND_URL}/join/${token}`,
+});
 
 
     } catch (error) {
