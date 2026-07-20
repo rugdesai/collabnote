@@ -1,126 +1,122 @@
-# CollabNote 📝✨
+# CollabNote
 
-A Notion-inspired real-time collaborative editor built for creating, managing, and editing rich-text notes with seamless multi-user synchronization.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma)
+![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=for-the-badge&logo=socketdotio)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-CollabNote brings together a modern editor experience, secure authentication, real-time updates, cloud image handling, and production-ready deployment.
+A Notion-inspired collaborative note-taking platform that enables users to create, edit, and manage rich-text documents with real-time synchronization. The application combines secure authentication, rich-text editing, cloud storage, and WebSocket-powered collaboration into a production-ready full-stack application.
 
 ---
 
-## 🚀 Live Demo
+# Live Demo
 
-🔗 Live Website: https://collabnote-seven.vercel.app
+**Application:** https://collabnote-seven.vercel.app
 
-💻 GitHub Repository: https://github.com/rugdesai/collabnote
+**Repository:** https://github.com/rugdesai/collabnote
 
 ---
 
-# 📸 Preview
+# Preview
 
 ## Authentication
 
-<img src="./assets/login.png" width="800"/>
+<p align="center">
+<img src="./assets/login.png" width="900">
+</p>
 
-Secure authentication system with user registration, login, JWT authorization, and protected application routes.
+JWT-based authentication with secure user registration, login, and protected application routes.
 
 ---
 
 ## Dashboard
 
-<img src="./assets/dashboard.png" width="800"/>
+<p align="center">
+<img src="./assets/dashboard.png" width="900">
+</p>
 
-A minimal workspace where users can create, manage, and access their notes.
-
-Features:
-- Personal notes dashboard
-- Recently updated notes
-- Persistent database storage
+A centralized workspace for creating, organizing, and managing personal notes with persistent PostgreSQL storage.
 
 ---
 
 ## Rich Text Editor
 
-<img src="./assets/editor.png" width="800"/>
+<p align="center">
+<img src="./assets/editor.png" width="900">
+</p>
 
-A Notion-style editor experience powered by Tiptap.
-
-Features include:
+Built with Tiptap, supporting:
 
 - Rich text formatting
 - Headings
 - Lists
 - Font customization
 - Text colors
-- Highlighting
-- Links
+- Highlights
+- Hyperlinks
 - Image embedding
-- Auto-saving notes
+- Automatic saving
 
 ---
 
 ## Real-Time Collaboration
 
-<img src="./assets/realtime.png" width="800"/>
+<p align="center">
+<img src="./assets/realtime.png" width="900">
+</p>
 
-Multiple clients can edit the same note simultaneously with instant synchronization.
-
-Powered using WebSockets with Socket.IO.
+Multiple users can edit the same document simultaneously using Socket.IO-powered real-time synchronization.
 
 ---
 
-# ✨ Features
+# Features
 
-### 🔐 Authentication
+## Authentication
 
-- User registration
-- Secure login
+- User registration and login
 - JWT-based authentication
-- Protected backend routes
+- Protected API routes
+- Secure password hashing with bcrypt
 
----
+## Notes Management
 
-### 📝 Notes Management
-
-- Create notes
-- Update notes
-- Delete notes
+- Create, edit, and delete notes
 - Auto-save functionality
-- Persistent storage
+- Persistent PostgreSQL storage
+- Personal workspace management
 
----
+## Rich Text Editing
 
-### 🎨 Rich Text Editing
-
-Built with Tiptap Editor:
-
-- Bold / Italic / Underline formatting
-- Headings
-- Lists
-- Text colors
-- Highlights
+- Tiptap Editor
+- Rich text formatting
+- Headings and lists
 - Font customization
-- Link insertion
-- Image support
+- Text highlighting
+- Hyperlinks
+- Image embedding
+- Responsive editing experience
 
----
+## Real-Time Collaboration
 
-### ⚡ Real-Time Collaboration
-
-- WebSocket based communication
-- Live document updates
-- Multiple active editing sessions
+- Live document synchronization
+- Multi-user editing sessions
+- Socket.IO communication
 - Shared collaborative workspace
 
----
-
-### ☁️ Cloud Integration
+## Cloud Integration
 
 - Cloudinary image uploads
-- PostgreSQL database hosting
-- Environment-based deployment configuration
+- PostgreSQL database
+- Environment-based configuration
+- Production deployment
 
 ---
 
-# 🛠 Tech Stack
+# Tech Stack
 
 ## Frontend
 
@@ -132,88 +128,112 @@ Built with Tiptap Editor:
 - Socket.IO Client
 - Axios
 
----
-
 ## Backend
 
 - Node.js
 - Express.js
 - TypeScript
-- Prisma ORM
 - PostgreSQL
+- Prisma ORM
 - Socket.IO
 - JWT Authentication
 - bcrypt
 
----
-
 ## Deployment
 
-- Vercel (Frontend)
-- Render (Backend)
+- Vercel
 - Docker
-- Cloud PostgreSQL
 - Cloudinary
 
 ---
 
-# ⚙️ Architecture
+# System Architecture
 
-```txt
-                React + TypeScript
-                        |
-                        |
+```text
+                 React + TypeScript
+                        │
+                        ▼
                  Express REST API
-                        |
-          -----------------------------
-          |                           |
-   PostgreSQL + Prisma          Socket.IO Server
-          |
-          |
-      Cloudinary Storage
+                ┌────────┴────────┐
+                ▼                 ▼
+      PostgreSQL + Prisma   Socket.IO Server
+                │
+                ▼
+         Cloudinary Storage
 ```
 
 ---
 
-# Database Models
+# Database Design
 
-Core database entities:
+Core entities include:
 
 - User
 - Note
 - Collaboration
 - Invite
 
-Supports note ownership, collaborative editing, and shared access.
+The schema supports document ownership, collaborative editing, user invitations, and shared access management.
 
 ---
 
-# Key Learnings
+# Local Setup
 
-Through CollabNote, I explored:
+```bash
+git clone https://github.com/rugdesai/collabnote.git
 
-- Building scalable full-stack applications
-- Designing REST APIs
-- Authentication and authorization
-- Database modeling using Prisma ORM
-- Real-time communication using WebSockets
-- Rich-text editor customization
-- Production deployment workflows
-- Docker-based deployment
-- Managing environment variables across services
+cd collabnote
+
+npm install
+
+npm run dev
+```
 
 ---
 
-# Future Enhancements
+# Project Structure
 
-- AI-powered writing assistant
+```text
+collabnote/
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── prisma/
+│   ├── routes/
+│   ├── services/
+│   └── server.ts
+│
+└── frontend/
+    ├── components/
+    ├── hooks/
+    ├── pages/
+    ├── services/
+    └── editor/
+```
+
+---
+
+# Highlights
+
+- Real-time collaborative editing using WebSockets
+- Rich-text editor powered by Tiptap
+- Secure JWT-based authentication
+- PostgreSQL with Prisma ORM
+- Cloudinary image management
+- Dockerized application
+- Fully deployed production application
+- Modular full-stack architecture
+
+---
+
+# Future Improvements
+
+- AI writing assistant
 - Collaborative cursors
 - Comments and mentions
 - Document version history
-- Advanced permissions
+- Granular access control
+- Offline editing support
 
 ---
-
-# Author
-
-Built by **Rugveda Desai** 🚀
