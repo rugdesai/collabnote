@@ -17,9 +17,6 @@ interface ToolbarProps {
   editor: Editor | null;
 }
 
-export default function Toolbar({ editor }: ToolbarProps) {
-  if (!editor) return null;
-
   const Button = ({
   onClick,
   active,
@@ -47,8 +44,12 @@ export default function Toolbar({ editor }: ToolbarProps) {
   </button>
 );
 
+
+export default function Toolbar({ editor }: ToolbarProps) {
+  if (!editor) return null;
+
   return (
-    <div className="flex items-center gap-2 bg-[#FFF8DC] px-5 py-3">
+    <div className="flex flex-wrap items-center gap-2 bg-[#FFF8DC] px-5 py-3">
 
         <select
   className="h-10 w-28 rounded-md border border-yellow-400 bg-black px-3 text-sm text-white"

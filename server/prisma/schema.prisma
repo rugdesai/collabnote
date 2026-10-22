@@ -12,12 +12,15 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  accessRequests AccessRequest[]
   notes     Note[]
   collaborations Collaboration[]
 }
 
 model Note {
   id        String   @id @default(uuid())
+  version   Int @default(0)
+  accessRequests AccessRequest[]
   title     String
   content   String
   createdAt DateTime @default(now())
@@ -50,6 +53,7 @@ model Invite {
 
   id String @id @default(uuid())
 
+  revokedAt DateTime?
   token String @unique
 
   noteId String
@@ -59,4 +63,23 @@ model Invite {
 
   note Note @relation(fields: [noteId], references: [id])
 
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+model AccessRequest {
+  id String @id @default(uuid())
+  noteId String
+  userId String
+  status RequestStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  decidedAt DateTime?
+  note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, noteId])
+  @@index([noteId, status])
 }

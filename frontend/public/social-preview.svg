@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#090909"/>
+  <rect x="24" y="24" width="1152" height="582" rx="24" fill="none" stroke="#2B2A22"/>
+  <path d="M72 104h48" stroke="#F4D953" stroke-width="4"/>
+  <text x="138" y="111" fill="#AAA89C" font-family="Arial, sans-serif" font-size="17" letter-spacing="4">A SPACE FOR SHARED IDEAS</text>
+  <text x="72" y="237" fill="#F4D953" font-family="Georgia, serif" font-style="italic" font-size="84">CollabNote</text>
+  <text x="76" y="317" fill="#FAF9F3" font-family="Arial, sans-serif" font-size="37" font-weight="600">Think. Write. Collaborate.</text>
+  <text x="76" y="382" fill="#A7A7A1" font-family="Arial, sans-serif" font-size="24">Capture ideas. Make room for more.</text>
+  <text x="76" y="419" fill="#A7A7A1" font-family="Arial, sans-serif" font-size="24">Your notes, together in real time.</text>
+  <text x="76" y="547" fill="#797971" font-family="Arial, sans-serif" font-size="18">collabnote-seven.vercel.app</text>
+  <g transform="translate(794 148)">
+    <rect x="20" y="4" width="254" height="330" rx="20" fill="#141410" stroke="#44402A" transform="rotate(8 147 169)"/>
+    <rect width="254" height="330" rx="20" fill="#F4D953"/>
+    <path d="M177 0v68h77" fill="#DBC047"/>
+    <path d="M45 82h82M45 120h161M45 157h161M45 194h112" stroke="#302A11" stroke-width="9" stroke-linecap="round"/>
+    <path d="m157 292 76-40" stroke="#191919" stroke-width="6"/>
+    <circle cx="157" cy="292" r="27" fill="#191919" stroke="#F4D953" stroke-width="5"/>
+    <circle cx="233" cy="252" r="27" fill="#191919" stroke="#F4D953" stroke-width="5"/>
+    <circle cx="157" cy="292" r="6" fill="#F4D953"/>
+    <circle cx="233" cy="252" r="6" fill="#F4D953"/>
+  </g>
+  <circle cx="1110" cy="110" r="5" fill="#F4D953"/>
+  <circle cx="747" cy="504" r="4" fill="#7D712E"/>
+</svg>

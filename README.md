@@ -237,3 +237,124 @@ collabnote/
 - Offline editing support
 
 ---
+
+## Collaboration: approval and realtime editing
+
+Invitations now require an explicit access request and owner approval. Opening a
+link never creates membership. Existing collaborators and invites are preserved.
+Links are reusable until revoked; revoking links blocks future use but does not
+remove existing collaborators or cancel requests already submitted. Rejected
+requests remain rejected (including repeated submissions); contact the owner
+rather than repeatedly requesting. Owners already have access and do not create
+requests for their own notes.
+
+### Setup and deployment
+
+Configure `server/.env` from `server/.env.example`. Set `FRONTEND_URL` to the
+frontend origin (production: `https://collabnote-seven.vercel.app`) so generated
+links and Socket.IO CORS use the correct host. Set a strong `JWT_SECRET`, the
+PostgreSQL `DATABASE_URL`, and optionally `PORT` (default 8000).
+Configure the frontend using `frontend/.env.example`: `VITE_API_URL` includes
+`/api`; `VITE_SOCKET_URL` is the backend origin. Cloudinary variables retain their
+existing image-upload purpose. Vite variables must be set at build time.
+
+Before starting the updated backend, run from `server`:
+
+```sh
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npm run build
+npm start
+```
+
+Build the frontend with `npm install` and `npm run build` in `frontend`.
+Deploy frontend and backend together: old clients omit required document versions
+and will receive 400 on saves. The new additive migration adds note versions,
+invitation revocation timestamps and access requests without resetting data.
+The existing migration history is unchanged. Do not run a database reset.
+
+### HTTP contract
+
+All routes below use `/api`. Authentication is `Authorization: Bearer <JWT>`.
+Only invitation metadata supports anonymous access; it exposes title and owner
+email, never content. An optional valid JWT adds the recipient's request status.
+Errors use `{ message }`, with 400 for invalid payloads, 401 for missing/invalid
+credentials, and 404 for inaccessible resources (including unauthorized owner
+operations). Request decisions return 409 when a different decision already won.
+
+| Method and route | Behavior / response |
+| --- | --- |
+| `POST /collaborators/:noteId/link` | Owner only. Retrieves an active link or creates a cryptographically random token; `{ link }`. |
+| `DELETE /collaborators/:noteId/link` | Owner only. Revokes all active links; 204. |
+| `GET /collaborators/invite/:token` | `{ noteId, title, owner, status }`; status is NONE, PENDING, APPROVED or REJECTED. Invalid/revoked links return 404. |
+| `POST /collaborators/join/:token` | Authenticated explicit request. `{ noteId, status }`; 202 pending, 200 for existing access/rejected status. Idempotent per user and note. |
+| `GET /collaborators/:noteId/requests` | Owner only. Requests with status, timestamps and requester `{ id, email }`. |
+| `PATCH /collaborators/:noteId/requests/:requestId` | Owner only. Body `{ status: "APPROVED" \| "REJECTED" }`. Atomically decides a pending request and creates membership on approval; returns request. Repeating the same decision is safe. |
+| `GET /collaborators/:noteId` | Authorized members only. Array of collaborator `{ id, email }`. |
+| `GET /notes/:id` | Authorized members only. Note including `version` and `isOwner`. |
+| `PUT /notes/:id` | Authorized members only. Requires `{ title, content, version }`. Returns `{ conflict: false, note }` after incrementing version, or 409 `{ conflict: true, note }` with current authorized server version. |
+| `DELETE /notes/:id` | Owner only; related records removed transactionally; 204. |
+
+Titles have a 500-character maximum; HTML content is limited to 900,000 bytes.
+JSON requests have a 1 MB limit. Unique database constraints prevent duplicate
+requests and memberships. Decisions, membership creation and versioned saves
+use database transactions.
+
+### Socket contract and synchronization
+
+Handshake: `auth: { token: JWT }`. The server loads identity from the database,
+disconnects expired tokens and verifies note access before joining a room.
+
+- `join-note(noteId, acknowledgement)` returns `{ note }` or `{ error }`.
+- `send-changes({ noteId, title, content, version }, acknowledgement)` uses the
+  same persisted save service as HTTP; returns `{ conflict, note }` or `{ error }`.
+  Joining the authorized note room is required before sending.
+- `receive-changes(note)` broadcasts only successfully persisted versions.
+- `user-typing({ noteId })` produces `receive-typing({ noteId, user })`. Identity
+  comes from the authenticated server session; client email is ignored.
+- `presence({ noteId, users })` lists connected users, deduplicated across tabs.
+- `access-request({ noteId })` goes to the owner's authenticated user room;
+  `access-decision({ noteId, status })` goes only to the requester.
+- `note-deleted({ noteId })` marks an open editor unavailable.
+
+The UI uses a single debounced, serialized HTTP save path, with sockets delivering
+persisted title/content updates and typing/presence. It rejoins and reloads on
+reconnect, and polls as a fallback. Invitation decisions also have polling fallback.
+Tiptap receives remote content with `emitUpdate: false`; it never owns another
+socket or a second autosave loop. Unsaved drafts survive refresh in tab-scoped
+session storage and are cleared on successful save or logout.
+
+This remains whole-document HTML collaboration, not a CRDT. Simultaneous edits
+cannot be merged automatically: an atomic version check rejects stale saves.
+The UI preserves the local draft, shows the server version and lets the user
+choose the server version, explicitly save their draft instead, or download it.
+Choosing the draft replaces the server document only if its reviewed version is
+still current. Remote full-document replacements may move the cursor. Realtime
+rooms currently assume one backend process; multiple instances need a shared
+Socket.IO adapter. Database version checks remain safe across processes.
+
+### Verification
+
+Both production builds and frontend lint can be run with their package scripts.
+The integration suite requires an **isolated disposable database** with the
+migrations already applied; it never loads the application's configured database:
+
+```sh
+cd server
+npm run build
+TEST_DATABASE_URL=postgresql://USER:PASSWORD@localhost:PORT/TEST_DB node --test tests/collaboration.cjs
+```
+
+The suite exercises metadata privacy, explicit/idempotent requests under
+concurrency, approval notifications, owner-only actions, rejection, revocation,
+unauthenticated sockets, unauthorized room/broadcast attempts, typing identity,
+concurrent version conflicts, persistence and owner-only deletion. It creates
+and cleans its own users and notes. It uses the frontend's installed Socket.IO
+client package, so install dependencies in both directories first.
+
+Browser acceptance checks: share and copy (including denied clipboard access),
+open the invitation signed out, register/sign in and resume, request and refresh,
+approve from another account, edit title and formatted content in both tabs,
+resize an image and refresh, edit simultaneously and resolve a conflict, disconnect
+and reconnect, switch notes, reject a second requester, and revoke the link.

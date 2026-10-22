@@ -1,6 +1,6 @@
+import { isAxiosError } from "axios";
 import { useState } from "react";
 import Button from "../components/common/button";
-import stripes from "../assets/stripes.jpg";
 import api from "../services/api";
 import { Link } from "react-router-dom";
 
@@ -41,7 +41,7 @@ const Login = () => {
       localStorage.removeItem("pendingInvite");
 
       window.location.href =
-        `/join/${pendingInvite}`;
+        `/join/${encodeURIComponent(pendingInvite)}`;
 
     } 
     
@@ -53,12 +53,12 @@ const Login = () => {
     }
 
 
-  } catch (error: any) {
+  } catch (error: unknown) {
 
     console.error(error);
 
     alert(
-      error.response?.data?.message ||
+      (isAxiosError(error) && error.response?.data?.message) ||
       "Login Failed"
     );
 
@@ -73,11 +73,11 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center">
 
-    <div className="w-full max-w-[1000px] h-[450px] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl grid grid-cols-2">
+    <div className="w-full max-w-[1000px] min-h-[450px] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-2">
         
 
     {/* Left */}
-<div className="bg-zinc-900 flex flex-col justify-center px-14">
+<div className="bg-zinc-900 flex flex-col justify-center px-6 py-8 md:px-14">
 
     <h1 className="text-3xl font-light text-white leading-tight">
         Welcome to{" "}
@@ -110,6 +110,7 @@ const Login = () => {
     />
 
     <Button
+    disabled={loading}
     type="button"
     onClick={handleLogin}
 >
@@ -131,7 +132,7 @@ const Login = () => {
     {/* Floating Dust */}
 <div className="absolute inset-0 overflow-hidden pointer-events-none">
   {[...Array(50)].map((_, i) => {
-    const size = Math.random() * 6 + 2;
+    const size = ((i * 37 + 11) % 101) / 101 * 6 + 2;
 
     return (
       <div
@@ -140,11 +141,11 @@ const Login = () => {
         style={{
           width: `${size}px`,
           height: `${size}px`,
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-          opacity: Math.random() * 0.2 + 0.05,
-          animation: `float ${6 + Math.random() * 8}s ease-in-out infinite`,
-          animationDelay: `${Math.random() * 8}s`,
+          top: `${((i * 37 + 11) % 101) / 101 * 100}%`,
+          left: `${((i * 37 + 11) % 101) / 101 * 100}%`,
+          opacity: ((i * 37 + 11) % 101) / 101 * 0.2 + 0.05,
+          animation: `float ${6 + ((i * 37 + 11) % 101) / 101 * 8}s ease-in-out infinite`,
+          animationDelay: `${((i * 37 + 11) % 101) / 101 * 8}s`,
         }}
       />
     );
@@ -159,7 +160,7 @@ const Login = () => {
     <div
   className="relative overflow-hidden"
   style={{
-    backgroundImage: `url(${stripes})`,
+    backgroundImage: "repeating-linear-gradient(135deg, #302b17 0px, #302b17 28px, #171717 28px, #171717 56px)",
     backgroundSize: "cover",
     backgroundPosition: "center",
   }}

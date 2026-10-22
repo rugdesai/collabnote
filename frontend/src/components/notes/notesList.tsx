@@ -44,7 +44,8 @@ export default function NotesList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchNotes();
+    const initial = window.setTimeout(fetchNotes, 0);
+    return () => clearTimeout(initial);
   }, []);
 
   console.log("Number of notes:", notes.length);

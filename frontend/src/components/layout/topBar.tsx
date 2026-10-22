@@ -1,30 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 
 export default function Topbar() {
 
 
-  const [user, setUser] =
-    useState("");
-
-
-
-  useEffect(() => {
-
-
-    const savedEmail =
-      localStorage.getItem("email");
-
-
-    setUser(
-      savedEmail || "User"
-    );
-
-
-  }, []);
-
-
-
+  const [user] = useState(() => localStorage.getItem("email") || "User");
 
   return (
 

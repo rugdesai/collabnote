@@ -4,7 +4,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { initializeSocket } from "./socket/socket";
 
-const PORT = 8000;
+const PORT = Number(process.env.PORT || 8000);
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -14,7 +14,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:5173",
-      "https://collabnote-seven.vercel.app"
+      process.env.FRONTEND_URL || "https://collabnote-seven.vercel.app"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,

@@ -1,6 +1,6 @@
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import sidebarBg from "../../assets/stripes.jpg";
+
 
 
 export default function Sidebar() {
@@ -12,6 +12,7 @@ export default function Sidebar() {
 
     localStorage.removeItem("token");
     localStorage.removeItem("email");
+    sessionStorage.clear();
 
     navigate("/");
 
@@ -37,8 +38,8 @@ export default function Sidebar() {
 
       {/* wallpaper */}
 
-      <img
-        src={sidebarBg}
+      <div
+        style={{ backgroundImage: "repeating-linear-gradient(135deg, #302b17 0px, #302b17 28px, #171717 28px, #171717 56px)" }}
         className="
         absolute
         inset-0

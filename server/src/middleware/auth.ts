@@ -1,37 +1,9 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-
-const authMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-    return res.status(401).json({
-      message: "Access Denied. No token provided.",
-    });
-  }
-
-  const token = authHeader.split(" ")[1];
-
+import { Request, Response, NextFunction } from 'express';
+import { verifyToken } from '../utils/jwt';
+export default function authenticate(req: Request, res: Response, next: NextFunction) {
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string
-    );
-
-    (req as any).user = decoded;
-
+    if (!req.headers.authorization?.startsWith('Bearer ')) throw new Error();
+    req.user = verifyToken(req.headers.authorization.slice(7));
     next();
-
-  } catch {
-    return res.status(401).json({
-      message: "Invalid Token",
-    });
-  }
-};
-
-export default authMiddleware;
+  } catch { res.status(401).json({ message: 'Please sign in again.' }); }
+}

@@ -4,9 +4,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body ?? {};
 
-  if (!email || !password) {
+  if (typeof email !== "string" || !email || typeof password !== "string" || !password || email.length > 320 || password.length > 1024) {
     return res.status(400).json({
       message: "Email and password are required",
     });
@@ -43,9 +43,9 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body ?? {};
 
-  if (!email || !password) {
+  if (typeof email !== "string" || !email || typeof password !== "string" || !password || email.length > 320 || password.length > 1024) {
     return res.status(400).json({
       message: "Email and password are required",
     });

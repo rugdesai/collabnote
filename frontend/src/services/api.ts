@@ -18,6 +18,7 @@ api.interceptors.request.use((config) => {
 export const updateNote = (
   id: string,
   data: {
+    version: number;
     title: string;
     content: string;
   }

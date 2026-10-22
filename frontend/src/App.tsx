@@ -5,9 +5,12 @@ import Dashboard from "./pages/dashboard";
 import NotePage from "./pages/notes";
 import JoinNote from "./pages/JoinNote";
 
+import RouteMetadata from "./components/RouteMetadata";
+
 function App() {
   return (
     <BrowserRouter>
+      <RouteMetadata />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
